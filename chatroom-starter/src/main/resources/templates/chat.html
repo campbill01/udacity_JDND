@@ -59,8 +59,8 @@
                     <h4 id="chat-num" class="chat-num"style="border:2em;margin:2em;"></h4>
                     <!-- TODO: check online number num -->
                 </div>
-                <!-- TODO: add a message container -->
-                <div id="messageContainer" class="messageContainer" style="text-align:left;width:50%;padding:1em;border:1px solid black;">Messages</div>
+                <!--  message container -->
+                <div id="messageContainer" class="messageContainer" style="text-align:left;width:65%;padding:1em;border:1px solid black;">Messages</div>
             </div>
 
         </div>
@@ -83,7 +83,6 @@
          * WebSocket client PS：URL shows WebSocket protocal, port number, and then end point.
          */
          var webSocket = new WebSocket("ws://localhost:8080/chat/" + userName);
-        //var webSocket = new WebSocket(/*[[${webSocketUrl}]]*/ 'ws://localhost:8080/chat');
         /**
          * websocket open connection.
          */
@@ -154,7 +153,7 @@
      * Clear screen
      */
     function clearMsg() {
-        $(".message-container").empty();
+        $(".messageContainer").empty();
     }
 
     /**

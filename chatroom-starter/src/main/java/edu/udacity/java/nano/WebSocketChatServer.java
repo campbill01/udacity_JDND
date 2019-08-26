@@ -1,17 +1,10 @@
 package edu.udacity.java.nano;
 
-import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.stereotype.Component;
-
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,17 +23,15 @@ import java.util.logging.Logger;
 //@ServerEndpoint(value="/chat")
 public class WebSocketChatServer {
     Logger logger = Logger.getLogger(WebSocketChatServer.class.getName());
-    private Session session;
+    //private Session session;
     /**
      * All chat sessions.
      */
     private static Map<Session, String> onlineSessions = new ConcurrentHashMap<>();
 
     private static void sendMessageToAll(String msg) throws IOException {
-        // TODO: add send message method.
           for(Session session: onlineSessions.keySet()) {
-                //session.addMessageHandler(clazz, handler);
-                System.out.println("Inside sendMessageToAll: " + session + " " + session + " " + session.toString());
+            System.out.println("Inside sendMessageToAll: " + session + " " + session + " " + session.toString());
                 session.getBasicRemote().sendText(msg);
           }
         }
@@ -50,37 +41,19 @@ public class WebSocketChatServer {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException {
-    //public void onOpen(Session session, String username) {  
-        // add session to map (key,value ??)
-        // add user where ?
-        //this.session = session;
-        //
-        // What is this madness. How am I getting username set here ?
-        // :shrug: it's working
-        //Message message = new Message();
-        //message.setUsername(username);
-        System.out.println("username is: " +username);
-        //
-        logger.log(Level.WARNING, "Inside of onOpen " + username);
-        System.out.println("In onOpen, My session is: " + session);
+        //System.out.println("username is: " +username);
+        //logger.log(Level.WARNING, "Inside of onOpen " + username);
+        //System.out.println("In onOpen, My session is: " + session);
         onlineSessions.put(session, username);    
-        System.out.println("I added the session for: " + onlineSessions.get(session));
-        //onlineSessions.put(session.username, session.getId());
-
+        logger.log(Level.WARNING, "Added session for: " + onlineSessions.get(session));
+ 
     }
 
     
     @OnMessage
     public void onMessage(Session session, String jsonStr) throws IOException, EncodeException {
-        //TODO: add send message.
-        //webSocket.send(JSON.stringify({username: $('#username').text(), msg: $message.val()}));
-        //String message = jsonStr["username"] + ": " + jsonStr["message"];
-        // get username and session ?? can't I just send the string ???
-        //String message = new Message(jsonStr).getMessage();
         System.out.println("input to onMessage: " + jsonStr);
         Gson g = new Gson();
-        //Gson gson = new GsonBuilder().create();
-        //
         Message newMessage = g.fromJson(jsonStr, Message.class);
         newMessage.setUsername(WebSocketChatServer.onlineSessions.get(session));
         System.out.println(newMessage.getUsername());
@@ -88,14 +61,8 @@ public class WebSocketChatServer {
             System.out.println("Input username is less than 1 char, setting default username");
             newMessage.setUsername("OhSoImpatient");
         }
-        //JacksonJsonParser parser = new JacksonJsonParser();
-        //jsonMessage = new ObjectMapper().readValue()
-        //session.getBasicRemote().sendObject((JSONObject) parser.parseMap("{\"this\": \"test\"}"));
-        //String response = "{\"username\":\"Bob\",\"msg\":\"Hi there.\"}";
         String response = "{\"username\":\"" + newMessage.getUsername() + "\",\"msg\":\"" + newMessage.getMessage() + "\"}";
-        //String response = "{\"username:" + newMessage.getUsername() + "\",\"" + newMessage.getMessage() + "\"}";
         System.out.println("newMessage bits are: " + newMessage.getMessage() + " and " + newMessage.getUsername());
-        //session.getBasicRemote().sendText(response);
         WebSocketChatServer.sendMessageToAll(response);
     }
 
@@ -106,7 +73,7 @@ public class WebSocketChatServer {
      */
     @OnClose
     public void onClose(Session session) throws IOException {
-        WebSocketChatServer.onlineSessions.remove(session.getId());
+        WebSocketChatServer.onlineSessions.remove(session);
         session.close();
     }
 

@@ -36,13 +36,10 @@ public class WebSocketChatApplication {
     
     @GetMapping("/index")
     public ModelAndView index(String username, HttpServletRequest request) throws UnknownHostException {
-        // TODO: add code for login to chatroom.
-        // session stuff add username and session to 'hashmap'
-        // send to chat page
         request.setAttribute("username", username);
         logger.log(Level.WARNING, "Inside of getmapping " + username);
-        System.out.println("Get some information username : " + username);
-        // successfully set username
+        //System.out.println("Get some information username : " + username);
+        //
         return new ModelAndView("/chat");
     }
     
