@@ -6,9 +6,6 @@ package edu.udacity.java.nano;
 public class Message {
     private String message;
     private String username;
-    // I think there should be a message and a username
-    // sending jsonStr here, probably need to split and set username and message
-    // until I figure out more of this, leaving as one big string
     public Message(){}
 
     public Message(String username, String message ){

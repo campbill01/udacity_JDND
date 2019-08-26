@@ -151,13 +151,14 @@
      */
     function login() {
         uname = document.getElementById("username").value;
-        if(uname !== "" && uname !== null){
+        if(uname !== "" ){
+            console.log(uname);
             location.href="/index?username="+uname;
         }else{
             alert("Username cannot be blank.");
             location.href="/";
+            }
         }
-    }
 
     /**
      * Enter to login.
