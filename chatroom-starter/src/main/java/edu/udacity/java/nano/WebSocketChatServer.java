@@ -15,6 +15,8 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * WebSocket Server
@@ -24,8 +26,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 
 @Component
+//@ServerEndpoint(value="/chat/{username}")
 @ServerEndpoint(value="/chat")
 public class WebSocketChatServer {
+    Logger logger = Logger.getLogger(WebSocketChatServer.class.getName());
     private Session session;
     /**
      * All chat sessions.
@@ -46,14 +50,20 @@ public class WebSocketChatServer {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException {
+    //public void onOpen(Session session, String username) {  
         // add session to map (key,value ??)
         // add user where ?
-        this.session = session;
+        //this.session = session;
+        //
+        // What is this madness. How am I getting username set here ?
+        // :shrug: it's working
         Message message = new Message();
         message.setUsername(username);
+        System.out.println("username is: " +username);
+        logger.log(Level.WARNING, "Inside of onOpen " + username);
         System.out.println("In onOpen, My session is: " + session);
-        //session.getBasicRemote().sendText("{test:data}");
-        WebSocketChatServer.onlineSessions.put(session, username);
+        onlineSessions.put(session, username);    
+        System.out.println("I added the session.");
         //onlineSessions.put(session.username, session.getId());
 
     }

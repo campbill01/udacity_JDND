@@ -152,7 +152,9 @@
     function login() {
         uname = document.getElementById("username").value;
         if(uname !== "" && uname !== null){
+            console.log(uname);
             location.href="/index?username="+uname;
+            //^^ works
         }else{
             alert("Username cannot be blank.");
             location.href="/";

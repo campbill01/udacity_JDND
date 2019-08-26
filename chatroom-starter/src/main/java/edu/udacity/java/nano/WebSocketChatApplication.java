@@ -39,8 +39,10 @@ public class WebSocketChatApplication {
         // TODO: add code for login to chatroom.
         // session stuff add username and session to 'hashmap'
         // send to chat page
+        request.setAttribute("username", username);
         logger.log(Level.WARNING, "Inside of getmapping " + username);
         System.out.println("Get some information username : " + username);
+        // successfully set username
         return new ModelAndView("/chat");
     }
     
