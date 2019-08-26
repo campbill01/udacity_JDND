@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 
 @Component
 @ServerEndpoint(value="/chat/{username}")
-//@ServerEndpoint(value="/chat")
 public class WebSocketChatServer {
     Logger logger = Logger.getLogger(WebSocketChatServer.class.getName());
     //private Session session;
@@ -28,11 +27,12 @@ public class WebSocketChatServer {
      * All chat sessions.
      */
     private static Map<Session, String> onlineSessions = new ConcurrentHashMap<>();
-
-    private static void sendMessageToAll(String msg) throws IOException {
+    private static void sendMessageToAll(String msg, String user) throws IOException {
+          int onlineCount = onlineSessions.size();
+          String response = "{\"username\":\"" + user + "\",\"msg\":\"" + msg + "\",\"onlineCount\":\"" + onlineCount + "\",\"type\":\"SPEAK\"}";
           for(Session session: onlineSessions.keySet()) {
             System.out.println("Inside sendMessageToAll: " + session + " " + session + " " + session.toString());
-                session.getBasicRemote().sendText(msg);
+                session.getBasicRemote().sendText(response);
           }
         }
 
@@ -41,9 +41,6 @@ public class WebSocketChatServer {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException {
-        //System.out.println("username is: " +username);
-        //logger.log(Level.WARNING, "Inside of onOpen " + username);
-        //System.out.println("In onOpen, My session is: " + session);
         onlineSessions.put(session, username);    
         logger.log(Level.WARNING, "Added session for: " + onlineSessions.get(session));
  
@@ -61,9 +58,10 @@ public class WebSocketChatServer {
             System.out.println("Input username is less than 1 char, setting default username");
             newMessage.setUsername("OhSoImpatient");
         }
-        String response = "{\"username\":\"" + newMessage.getUsername() + "\",\"msg\":\"" + newMessage.getMessage() + "\"}";
-        System.out.println("newMessage bits are: " + newMessage.getMessage() + " and " + newMessage.getUsername());
-        WebSocketChatServer.sendMessageToAll(response);
+        String message = newMessage.getMessage();
+        String user = newMessage.getUsername();
+        System.out.println("Sending message: " + message + " from " + user);
+        WebSocketChatServer.sendMessageToAll(message, user);
     }
 
     /**

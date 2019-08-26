@@ -55,8 +55,10 @@
                 <div class="mdui-chip">
                     <span class="mdui-chip-icon mdui-color-blue">
                         <i class="mdui-icon material-icons">face</i></span>
-                    <span class="mdui-chip-title">Online Users</span>
-                    <h4 id="chat-num" class="chat-num"style="border:2em;margin:2em;"></h4>
+                    <span  id="chat-num-title" class="mdui-chip-title">Online Users
+                        <h4 class="chat-num" id="chat-num"></h4>
+                    </span>
+                    
                     <!-- TODO: check online number num -->
                 </div>
                 <!--  message container -->
@@ -94,8 +96,8 @@
          * Server send 1) broadcast message, 2) online users.
          */
         webSocket.onmessage = function (event) {
-            console.log('WebSocket Receives：%c' + event.data, 'color:green');
             //Receive Message from Server
+            console.log('WebSocket Receives：%c' + event.data, 'color:green');
             var chatMessage="";
             var message = JSON.parse(event.data) || {};
             var $messageContainer = $('.message-container');
@@ -110,7 +112,7 @@
                 chatMessage = message.username + ":" + " " + message.msg;
                 messageWindow.innerHTML += '<div>' + chatMessage + '</div>';
             }
-            $('.chat-num').text(message.onlineCount);
+            $('#chat-num-title').text("Online Users             " + message.onlineCount);
             var $cards = $messageContainer.children('.mdui-card:visible').toArray();
             if ($cards.length > 5) {
                 $cards.forEach(function (item, index) {

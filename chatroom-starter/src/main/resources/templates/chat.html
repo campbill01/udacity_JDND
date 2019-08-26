@@ -55,12 +55,11 @@
                 <div class="mdui-chip">
                     <span class="mdui-chip-icon mdui-color-blue">
                         <i class="mdui-icon material-icons">face</i></span>
-                    <span class="mdui-chip-title">Online Users</span>
-                    <h4 id="chat-num" class="chat-num"style="border:2em;margin:2em;"></h4>
-                    <!-- TODO: check online number num -->
+                    <span  id="chat-num-title" class="mdui-chip-title">Online Users
+                        <h4 class="chat-num" id="chat-num"></h4>
+                    </span>
                 </div>
-                <!--  message container -->
-                <div id="messageContainer" class="messageContainer" style="text-align:left;width:65%;padding:1em;border:1px solid black;">Messages</div>
+                <div id="message-container" class="mdui-col-xs-6 mdui-col-sm-10" style="padding:10px 0">
             </div>
 
         </div>
@@ -68,7 +67,7 @@
 </div>
 
 <script th:inline="javascript">
-    const messageWindow = document.getElementById("messageContainer");
+    const messageContainer = $("#message-container");
  
     /**
      * WebSocket Client
@@ -94,13 +93,13 @@
          * Server send 1) broadcast message, 2) online users.
          */
         webSocket.onmessage = function (event) {
-            console.log('WebSocket Receives：%c' + event.data, 'color:green');
             //Receive Message from Server
+            console.log('WebSocket Receives：%c' + event.data, 'color:green');
             var chatMessage="";
             var message = JSON.parse(event.data) || {};
-            var $messageContainer = $('.message-container');
+            var $messageContainer = messageContainer;
             if (message.type === 'SPEAK') {
-                console.log("wtf is SPEAK ?");
+                //sit booboo, sit.
                 $messageContainer.append(
                     '<div class="mdui-card" style="margin: 10px 0;">' +
                     '<div class="mdui-card-primary">' +
@@ -108,9 +107,9 @@
                     '</div></div>');
             }else{
                 chatMessage = message.username + ":" + " " + message.msg;
-                messageWindow.innerHTML += '<div>' + chatMessage + '</div>';
+                messageContainer.innerHTML += '<div>' + chatMessage + '</div>';
             }
-            $('.chat-num').text(message.onlineCount);
+            $('#chat-num-title').text("Online Users             " + message.onlineCount);
             var $cards = $messageContainer.children('.mdui-card:visible').toArray();
             if ($cards.length > 5) {
                 $cards.forEach(function (item, index) {
@@ -153,7 +152,7 @@
      * Clear screen
      */
     function clearMsg() {
-        $(".messageContainer").empty();
+        messageContainer.empty();
     }
 
     /**
