@@ -26,8 +26,8 @@ import java.util.logging.Logger;
  */
 
 @Component
-//@ServerEndpoint(value="/chat/{username}")
-@ServerEndpoint(value="/chat")
+@ServerEndpoint(value="/chat/{username}")
+//@ServerEndpoint(value="/chat")
 public class WebSocketChatServer {
     Logger logger = Logger.getLogger(WebSocketChatServer.class.getName());
     private Session session;
@@ -57,13 +57,14 @@ public class WebSocketChatServer {
         //
         // What is this madness. How am I getting username set here ?
         // :shrug: it's working
-        Message message = new Message();
-        message.setUsername(username);
+        //Message message = new Message();
+        //message.setUsername(username);
         System.out.println("username is: " +username);
+        //
         logger.log(Level.WARNING, "Inside of onOpen " + username);
         System.out.println("In onOpen, My session is: " + session);
         onlineSessions.put(session, username);    
-        System.out.println("I added the session.");
+        System.out.println("I added the session for: " + onlineSessions.get(session));
         //onlineSessions.put(session.username, session.getId());
 
     }
@@ -81,7 +82,7 @@ public class WebSocketChatServer {
         //Gson gson = new GsonBuilder().create();
         //
         Message newMessage = g.fromJson(jsonStr, Message.class);
-        newMessage.setUsername(WebSocketChatServer.onlineSessions.get(session.getId()));
+        newMessage.setUsername(WebSocketChatServer.onlineSessions.get(session));
         System.out.println(newMessage.getUsername());
         if(newMessage.getUsername().length() < 1){
             System.out.println("Input username is less than 1 char, setting default username");

@@ -78,15 +78,16 @@
      */
 
     function getWebSocket() {
+        var userName = username.textContent;
         /**
          * WebSocket client PS：URL shows WebSocket protocal, port number, and then end point.
          */
-         var webSocket = new WebSocket("ws://localhost:8080/chat");
+         var webSocket = new WebSocket("ws://localhost:8080/chat/" + userName);
         //var webSocket = new WebSocket(/*[[${webSocketUrl}]]*/ 'ws://localhost:8080/chat');
         /**
          * websocket open connection.
          */
-        webSocket.onopen = function (event) {
+        webSocket.onopen = function (event, userName) {
             console.log('WebSocket open connection');
         };
 
