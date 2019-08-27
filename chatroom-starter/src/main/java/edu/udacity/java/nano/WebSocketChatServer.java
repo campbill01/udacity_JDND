@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 
 @Component
 @ServerEndpoint(value="/chat/{username}")
-//@ServerEndpoint(value="/chat")
 public class WebSocketChatServer {
     Logger logger = Logger.getLogger(WebSocketChatServer.class.getName());
     //private Session session;
@@ -42,9 +41,6 @@ public class WebSocketChatServer {
      */
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException {
-        //System.out.println("username is: " +username);
-        //logger.log(Level.WARNING, "Inside of onOpen " + username);
-        //System.out.println("In onOpen, My session is: " + session);
         onlineSessions.put(session, username);    
         logger.log(Level.WARNING, "Added session for: " + onlineSessions.get(session));
  
@@ -64,7 +60,6 @@ public class WebSocketChatServer {
         }
         String message = newMessage.getMessage();
         String user = newMessage.getUsername();
-        //String response = "{\"username\":\"" + newMessage.getUsername() + "\",\"msg\":\"" + newMessage.getMessage() + "\"}";
         System.out.println("Sending message: " + message + " from " + user);
         WebSocketChatServer.sendMessageToAll(message, user);
     }
