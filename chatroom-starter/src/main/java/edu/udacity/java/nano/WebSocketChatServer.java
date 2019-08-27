@@ -27,13 +27,15 @@ public class WebSocketChatServer {
      */
     private static Map<Session, String> onlineSessions = new ConcurrentHashMap<>();
     private static void sendMessageToAll(Message message) throws IOException {
-          message.setOnlineCount(onlineSessions.size());
-          message.setType("SPEAK");
-          Gson g = new Gson();
-          String stringMessage = g.toJson(message);
-          for(Session session: onlineSessions.keySet()) {
-            //System.out.println("Inside sendMessageToAll: " + stringMessage + " " + session + " " + session.toString());
-            session.getBasicRemote().sendText(stringMessage);
+          int numChatters = onlineSessions.size();
+          if(numChatters > 0){
+            message.setOnlineCount(numChatters);
+            message.setType("SPEAK");
+            Gson g = new Gson();
+            String stringMessage = g.toJson(message);
+            for(Session session: onlineSessions.keySet()) {
+                session.getBasicRemote().sendText(stringMessage);
+            }
           }
         }
 
@@ -44,16 +46,20 @@ public class WebSocketChatServer {
     public void onOpen(Session session, @PathParam("username") String username) throws IOException {
         onlineSessions.put(session, username);    
         logger.log(Level.WARNING, "Added session for: " + onlineSessions.get(session));
+        Message newMessage = new Message();
+        newMessage.setMessage("Joined the chat");
+        newMessage.setUsername(WebSocketChatServer.onlineSessions.get(session));
+        WebSocketChatServer.sendMessageToAll(newMessage);
  
     }
 
     
     @OnMessage
     public void onMessage(Session session, String jsonStr) throws IOException, EncodeException {
-        System.out.println("input to onMessage: " + jsonStr);
+        //System.out.println("input to onMessage: " + jsonStr);
         Gson g = new Gson();
         Message newMessage = g.fromJson(jsonStr, Message.class);
-        System.out.println(newMessage.getUsername());
+        //System.out.println(newMessage.getUsername());
         if(newMessage.getUsername().length() < 1){
             System.out.println("Input username is less than 1 char, setting default username");
             newMessage.setUsername("OhSoImpatient");
@@ -71,8 +77,12 @@ public class WebSocketChatServer {
      */
     @OnClose
     public void onClose(Session session) throws IOException {
+        Message newMessage = new Message();
+        newMessage.setMessage("Left the chat");
+        newMessage.setUsername(WebSocketChatServer.onlineSessions.get(session));
         WebSocketChatServer.onlineSessions.remove(session);
         session.close();
+        WebSocketChatServer.sendMessageToAll(newMessage);
     }
 
     /**
