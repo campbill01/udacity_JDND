@@ -28,10 +28,9 @@ public class WebSocketChatServer {
      * All chat sessions.
      */
     private static Map<Session, String> onlineSessions = new ConcurrentHashMap<>();
-
     private static void sendMessageToAll(String msg, String user) throws IOException {
           int onlineCount = onlineSessions.size();
-          String response = "{\"username\":\"" + user + "\",\"msg\":\"" + msg + "\",\"onlineCount\":\"" + onlineCount + "\"}";
+          String response = "{\"username\":\"" + user + "\",\"msg\":\"" + msg + "\",\"onlineCount\":\"" + onlineCount + "\",\"type\":\"SPEAK\"}";
           for(Session session: onlineSessions.keySet()) {
             System.out.println("Inside sendMessageToAll: " + session + " " + session + " " + session.toString());
                 session.getBasicRemote().sendText(response);
