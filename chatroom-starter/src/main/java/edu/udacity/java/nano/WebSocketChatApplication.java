@@ -27,7 +27,7 @@ public class WebSocketChatApplication {
     
     @GetMapping("/")
     public ModelAndView login() {
-        return new ModelAndView("/login");
+        return new ModelAndView("login");
     }
     
     /**
@@ -37,10 +37,8 @@ public class WebSocketChatApplication {
     @GetMapping("/index")
     public ModelAndView index(String username, HttpServletRequest request) throws UnknownHostException {
         request.setAttribute("username", username);
-        logger.log(Level.WARNING, "Inside of getmapping " + username);
-        //System.out.println("Get some information username : " + username);
-        //
-        return new ModelAndView("/chat");
+        logger.log(Level.WARNING, "Inside of getmapping index " + username);
+        return new ModelAndView("chat");
     }
     
 }
