@@ -38,8 +38,6 @@ public class WebSocketChatApplication {
     public ModelAndView index(String username, HttpServletRequest request) throws UnknownHostException {
         request.setAttribute("username", username);
         logger.log(Level.WARNING, "Inside of getmapping " + username);
-        //System.out.println("Get some information username : " + username);
-        //
         return new ModelAndView("/chat");
     }
     

@@ -22,17 +22,18 @@ import java.util.logging.Logger;
 @ServerEndpoint(value="/chat/{username}")
 public class WebSocketChatServer {
     Logger logger = Logger.getLogger(WebSocketChatServer.class.getName());
-    //private Session session;
     /**
      * All chat sessions.
      */
     private static Map<Session, String> onlineSessions = new ConcurrentHashMap<>();
-    private static void sendMessageToAll(String msg, String user) throws IOException {
-          int onlineCount = onlineSessions.size();
-          String response = "{\"username\":\"" + user + "\",\"msg\":\"" + msg + "\",\"onlineCount\":\"" + onlineCount + "\",\"type\":\"SPEAK\"}";
+    private static void sendMessageToAll(Message message) throws IOException {
+          message.setOnlineCount(onlineSessions.size());
+          message.setType("SPEAK");
+          Gson g = new Gson();
+          String stringMessage = g.toJson(message);
           for(Session session: onlineSessions.keySet()) {
-            System.out.println("Inside sendMessageToAll: " + session + " " + session + " " + session.toString());
-                session.getBasicRemote().sendText(response);
+            //System.out.println("Inside sendMessageToAll: " + stringMessage + " " + session + " " + session.toString());
+            session.getBasicRemote().sendText(stringMessage);
           }
         }
 
@@ -52,7 +53,6 @@ public class WebSocketChatServer {
         System.out.println("input to onMessage: " + jsonStr);
         Gson g = new Gson();
         Message newMessage = g.fromJson(jsonStr, Message.class);
-        newMessage.setUsername(WebSocketChatServer.onlineSessions.get(session));
         System.out.println(newMessage.getUsername());
         if(newMessage.getUsername().length() < 1){
             System.out.println("Input username is less than 1 char, setting default username");
@@ -60,8 +60,8 @@ public class WebSocketChatServer {
         }
         String message = newMessage.getMessage();
         String user = newMessage.getUsername();
-        System.out.println("Sending message: " + message + " from " + user);
-        WebSocketChatServer.sendMessageToAll(message, user);
+        System.out.println("Sending message: " + message + " from: " + user);
+        WebSocketChatServer.sendMessageToAll(newMessage);
     }
 
     /**

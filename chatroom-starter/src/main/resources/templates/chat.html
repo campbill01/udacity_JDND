@@ -37,9 +37,12 @@
                     </div>
                     <div class="mdui-container" style="padding:20px 35px">
                             <button class="mdui-btn mdui-color-theme mdui-ripple"
-                            onclick="sendMsgToServer()">Send
+                            onclick="sendMsgToServer()">Send Message
                         <button class="mdui-btn mdui-color-theme mdui-ripple"
                                 onclick="clearMsg()">Clear
+                        </button>
+                        <button class="mdui-btn mdui-color-theme mdui-ripple"
+                                onclick="logOut()">Log Out
                         </button>
                     </div>
                 </div>
@@ -103,10 +106,10 @@
                 $messageContainer.append(
                     '<div class="mdui-card" style="margin: 10px 0;">' +
                     '<div class="mdui-card-primary">' +
-                    '<div class="mdui-card-content message-content">' + message.username + "：" + message.msg + '</div>' +
+                    '<div class="mdui-card-content message-content">' + message.username + "：" + message.message + '</div>' +
                     '</div></div>');
             }else{
-                chatMessage = message.username + ":" + " " + message.msg;
+                chatMessage = message.username + ":" + " " + message.message;
                 messageContainer.innerHTML += '<div>' + chatMessage + '</div>';
             }
             $('#chat-num-title').text("Online Users             " + message.onlineCount);
@@ -153,6 +156,13 @@
      */
     function clearMsg() {
         messageContainer.empty();
+    }
+
+    function logOut() {
+        clearMsg();
+        //Would log out when leaving the page anyway, but this is clearer what is happening.
+        webSocket.close();
+        location.href="/"
     }
 
     /**
