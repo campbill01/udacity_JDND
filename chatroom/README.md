@@ -17,5 +17,10 @@ class in chat module. Make sure you cover all there basic actions.
 Implement all TODOs inside WebSocketChatServer follow each method description.
 
 ### Run the application with command
-mvn build; mvn spring-boot:run
+mvn compile; mvn spring-boot:run
 
+### Packaging instructions
+Selenium is used for tests, the app must be running for this to complete
+
+1. In terminal 1:mvn spring-boot:run
+2. In terminal 2:mvn package
