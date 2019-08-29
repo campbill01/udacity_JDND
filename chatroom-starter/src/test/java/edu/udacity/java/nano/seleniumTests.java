@@ -20,9 +20,11 @@ public class seleniumTests {
 
         @Test
         public  void main() {
-                     // this requires the app to be running, is there a way around this?
-                     logger.log(Level.WARNING, "Starting selenium test..");
-
+                     //
+                     // these test require the app to be running
+                     //
+                     logger.log(Level.INFO, "Starting selenium test..");
+                
                      WebDriver FrodoDriver = new HtmlUnitDriver(true);
                      WebDriver SamDriver = new HtmlUnitDriver(true);
                      FrodoDriver.manage().timeouts().pageLoadTimeout(60, TimeUnit.SECONDS);
@@ -42,14 +44,14 @@ public class seleniumTests {
                     // Cache the pagesource
                     String pageSource = FrodoDriver.getPageSource();
                     // Login test
-                    logger.log(Level.WARNING, "Starting login test...");
+                    logger.log(Level.INFO, "Starting login test...");
                     assertTrue(pageSource.contains("Frodo：Joined the chat"));
                     // Send message(chat) test
-                    logger.log(Level.WARNING, "Starting send message(chat) test..");
+                    logger.log(Level.INFO, "Starting send message(chat) test..");
                     assertTrue(pageSource.contains("Frodo：Hello, Sam."));
                     //
                     // It's all over but the login' out
-                    logger.log(Level.WARNING, "Starting logout test..");
+                    logger.log(Level.INFO, "Starting logout test..");
                     WebElement logoutButton = FrodoDriver.findElement(By.id("logoutButton"));
                     // Retreive Sam's version of the page and wait for update
                     SamDriver.get("http://localhost:8080/index?username=Sam");
@@ -57,7 +59,7 @@ public class seleniumTests {
                     logoutButton.click();
                     WebDriverWait waitForLogout = new WebDriverWait(SamDriver, 10);
                     waitForLogout.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(.,'Frodo：Left the chat')]")));
-                    // See ya Frodo, have fun in Mordor
+                    // See ya Frodo, have fun storming the volcanoe
                     assertTrue(SamDriver.getPageSource().contains("Frodo：Left the chat"));
                     SamDriver.quit();			
          }		

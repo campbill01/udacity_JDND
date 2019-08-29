@@ -45,7 +45,7 @@ public class WebSocketChatServer {
     @OnOpen
     public void onOpen(Session session, @PathParam("username") String username) throws IOException {
         onlineSessions.put(session, username);    
-        logger.log(Level.WARNING, "Added session for: " + onlineSessions.get(session));
+        logger.log(Level.INFO, "Added session for: " + onlineSessions.get(session));
         Message newMessage = new Message();
         newMessage.setMessage("Joined the chat");
         newMessage.setUsername(WebSocketChatServer.onlineSessions.get(session));

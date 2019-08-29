@@ -37,7 +37,7 @@ public class WebSocketChatApplication {
     @GetMapping("/index")
     public ModelAndView index(String username, HttpServletRequest request) throws UnknownHostException {
         request.setAttribute("username", username);
-        logger.log(Level.WARNING, "Inside of getmapping index " + username);
+        logger.log(Level.INFO, "Inside of getmapping index " + username);
         return new ModelAndView("chat");
     }
     

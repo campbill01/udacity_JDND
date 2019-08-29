@@ -1,43 +1,50 @@
-<!DOCTYPE html>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
-<head>
-    <style>
-table td{
-vertical-align:top;
-border:solid 1px #888;
-padding:10px;
-}
 
+<head>
+    <link rel="stylesheet" type="text/css" media="all" href="../../css/gtvg.css" th:href="@{/css/gtvg.css}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <style>
+        table td{
+        vertical-align:top;
+        border:solid 1px #888;
+        padding:10px;
+        }
     </style>
 </head>
 <body>
-<h1>Webchat Error Page</h1>
-<table>
-    <tr>
-        <td>Date</td>
-        <td th:text="${timestamp}"/>
-    </tr>
-    <tr>
-        <td>Path</td>
-        <td th:text="${path}"/>
-    </tr>
-    <tr>
-        <td>Error</td>
-        <td th:text="${error}"/>
-    </tr>
-    <tr>
-        <td>Status</td>
-        <td th:text="${status}"/>
-    </tr>
-    <tr>
-        <td>Message</td>
-        <td th:text="${message}"/>
-    </tr>
-    <tr>
-        <td>Exception</td>
-        <td th:text="${exception}"/>
-    </tr>
-</table>
+<div class="container">
+    <div class="jumbotron">
+        <h1 class="display-4">Webchat Error Page</h1>
+        <div class="row">
+            <div class="col-xl">Date</div>
+            <div class="col-xl" th:text="${timestamp}"> </div>
+        </div>
+        <div class="row">
+            <div class="col-xl">Path</div>
+            <div class="col-xl" th:text="${path}"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl">Error</div>
+            <div class="col-xl" th:text="${error}"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl">Status</div>
+            <div class="col-xl" th:text="${status}"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl">Message</div>
+            <div class="col-xl" th:text="${message}"></div>
+        </div>
+        <div class="row">
+            <div class="col-xl">Exception</div>
+            <div class="col-xl" th:text="${exception}"></div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
