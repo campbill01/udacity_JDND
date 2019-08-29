@@ -6,11 +6,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
-public class ApplicationTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class WebsocketDemoApplicationTests {
 
-    @Test
-    public void contextLoads() throws Exception {
-    }
+	@Test
+	public void contextLoads() {
+	}
 
 }

@@ -1,7 +1,5 @@
 package edu.udacity.java.nano;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;

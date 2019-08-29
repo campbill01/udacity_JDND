@@ -56,10 +56,8 @@ public class WebSocketChatServer {
     
     @OnMessage
     public void onMessage(Session session, String jsonStr) throws IOException, EncodeException {
-        //System.out.println("input to onMessage: " + jsonStr);
         Gson g = new Gson();
         Message newMessage = g.fromJson(jsonStr, Message.class);
-        //System.out.println(newMessage.getUsername());
         if(newMessage.getUsername().length() < 1){
             System.out.println("Input username is less than 1 char, setting default username");
             newMessage.setUsername("OhSoImpatient");
