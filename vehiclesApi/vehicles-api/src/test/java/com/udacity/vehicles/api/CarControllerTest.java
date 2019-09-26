@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -123,6 +124,22 @@ public class CarControllerTest {
         Long carId = car.getId();
         mvc.perform(delete("/cars/" + carId)).andExpect(status().isOk()).andExpect(content().string(containsString("Car Deleted")));
     }
+
+    /**
+     * Tests for successful update car in the system
+     * 
+     * @throws Exception when car updatea fails in the system
+     */
+    @Test
+    public void updateCar() throws Exception {
+        Car car = getCar();
+        car.setPrice("500");
+        Long carId = car.getId();
+        mvc.perform(put(new URI("/cars/"+carId)).content(json.write(car).getJson())
+                .contentType(MediaType.APPLICATION_JSON_UTF8).accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
+    }
+
 
     /**
      * Creates an example Car object for use in testing.

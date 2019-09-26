@@ -11,6 +11,10 @@ should be running at once for full operation. Further instructions are available
 - [Pricing Service](pricing-service/README.md)
 - [Boogle Maps](boogle-maps/README.md)
 
+Furthermore, these applications rely on Eureka server to be running.
+
+- [Eureka](eureka/README.md)
+
 ## Dependencies
 
 The project requires the use of Maven and Spring Boot, along with Java v11.
