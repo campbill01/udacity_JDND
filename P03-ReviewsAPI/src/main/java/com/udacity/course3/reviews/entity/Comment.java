@@ -28,14 +28,6 @@ public class Comment {
     @JoinColumn(name="review_id", referencedColumnName = "review_id")
     private Review review;
 
-    public Review getReview() {
-        return this.review;
-    }
-
-    public void setReview(Review review) {
-        this.review = review;
-    }
-
     @Column(name="comment_text")
     private String commentText;
 
@@ -45,6 +37,14 @@ public class Comment {
     @Column(name="created_at")
     @CreationTimestamp
     private Timestamp commentTime;
+
+    public Review getReview() {
+        return this.review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
 
     public String getCommentText() {
         return this.commentText;
