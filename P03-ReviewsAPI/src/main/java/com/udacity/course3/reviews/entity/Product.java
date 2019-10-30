@@ -18,6 +18,12 @@ public class Product {
     @Column(name ="product_id")
     private Integer productId;
 
+    @Column(name="product_name")
+    private String productName;
+
+    @Column(name="price")
+    private Double price;
+
     public Integer getProductId() {
         return this.productId;
     }
@@ -25,13 +31,7 @@ public class Product {
     public void setProductId(Integer productId) {
         this.productId = productId;
     }
-
-    @Column(name="product_name")
-    private String productName;
-
-    @Column(name="price")
-    private Double price;
-
+    
     public String getProductName() {
         return this.productName;
     }

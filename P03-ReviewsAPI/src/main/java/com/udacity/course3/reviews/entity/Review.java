@@ -28,6 +28,17 @@ public class Review {
     @JoinColumn(name="product_id", referencedColumnName = "product_id")
     private Product product;
 
+    @Column(name="created_at")
+    @CreationTimestamp
+    private Timestamp created_at;
+    
+    @Column(name="review_author")
+    private String reviewAuthor;
+
+    @Column(name="review_text")
+    private String reviewText;
+
+
     public Integer getReviewId() {
         return this.reviewId;
     }
@@ -44,16 +55,6 @@ public class Review {
         this.product = product;
     }
     
-    @Column(name="created_at")
-    @CreationTimestamp
-    private Timestamp created_at;
-    
-    @Column(name="review_author")
-    private String reviewAuthor;
-
-    @Column(name="review_text")
-    private String reviewText;
-
     public Timestamp getCreated_at() {
         return this.created_at;
     }

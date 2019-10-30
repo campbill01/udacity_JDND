@@ -1,20 +1,24 @@
 package com.udacity.course3.reviews.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.udacity.course3.reviews.entity.Product;
 import com.udacity.course3.reviews.repository.ProductRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Spring REST controller for working with product entity.
@@ -53,7 +57,8 @@ public class ProductsController {
             headers.add("Responded", "ProductsController");
             return ResponseEntity.accepted().headers(headers).body(lookupProduct.get());
         }else{
-            throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+            logger.info("Product not found, sending 404");
+            return ResponseEntity.notFound().build();
         }
 
     }
@@ -68,7 +73,8 @@ public class ProductsController {
         logger.info("Running Products controller get method of id");
         Iterable<Product> products = productRepository.findAll();
         if(products.equals(null)){
-            throw new HttpServerErrorException(HttpStatus.NOT_FOUND);
+            logger.info("Product not found, sending 404");
+            return (List<?>) ResponseEntity.notFound().build();
         }else{
             List<Product> results = new ArrayList<Product>();
             for(Product item: products){
