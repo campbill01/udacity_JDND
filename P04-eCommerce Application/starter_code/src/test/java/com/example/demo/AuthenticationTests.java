@@ -44,7 +44,6 @@ import org.springframework.test.web.servlet.ResultActions.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-//@WebMvcTest
 public class AuthenticationTests {
     private Logger logger =  LoggerFactory.getLogger(AuthenticationTests.class);
 
@@ -52,15 +51,11 @@ public class AuthenticationTests {
     final String createUserUrl = "/api/user/create";
     final String loginUrl = "/login";
     private String testUsername = null;
-    // @Autowired
-    // private MockMvc mvc;
     
     @LocalServerPort
     private int port;
 
     
-    //@Autowired
-    //private RestTemplate restTemplate;
     private RestTemplate restTemplate = mock(RestTemplate.class);
     private HttpHeaders headers;
     private JSONObject userJsonObject;
@@ -68,17 +63,6 @@ public class AuthenticationTests {
    
 
 
-    // @Before
-    // public void setUp(){
-    //     this.restTemplate = new RestTemplate();
-    //     this.headers = new HttpHeaders();
-    //     headers.setContentType(MediaType.APPLICATION_JSON);
-    //     this.userJsonObject = new JSONObject();
-    //     userJsonObject.put("username", "Test Guy");
-    //     userJsonObject.put("password", "abcdefg");
-    //     userJsonObject.put("confirmPassword", "abcdefg");
-
-    // }
 
     @Order(1)
     @Test
@@ -120,20 +104,11 @@ public class AuthenticationTests {
         userJsonObject.put("password", "abcdefg");
         userJsonObject.put("confirmPassword", "abcdefg");
 
-        //if(this.testUsername == "" || this.testUsername == null) {
-            //this.userJsonObject.replace("username", "Test Guy", "New Guy");
-            HttpEntity<String> request = new HttpEntity<String>(userJsonObject.toString(), headers);
-            ObjectMapper objectMapper = new ObjectMapper();
-            ResponseEntity<String> responseEntityStr = this.restTemplate.postForEntity(host + port + createUserUrl, request, String.class);
-            JsonNode entityRoot = objectMapper.readTree(responseEntityStr.getBody());
-        //}
+        HttpEntity<String> request = new HttpEntity<String>(userJsonObject.toString(), headers);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ResponseEntity<String> responseEntityStr = this.restTemplate.postForEntity(host + port + createUserUrl, request, String.class);
+        JsonNode entityRoot = objectMapper.readTree(responseEntityStr.getBody());
         this.restTemplate = new RestTemplate();
-        // this.headers = new HttpHeaders();
-        // headers.setContentType(MediaType.APPLICATION_JSON);
-        // this.userJsonObject = new JSONObject();
-        // userJsonObject.put("username", "Test Guy");
-        // userJsonObject.put("password", "abcdefg");
-        // userJsonObject.put("confirmPassword", "abcdefg");
 
         userJsonObject.remove("confirmPassword");
         HttpEntity<String> loginRequest = new HttpEntity<String>(userJsonObject.toString(), headers);
@@ -159,7 +134,6 @@ public class AuthenticationTests {
         userJsonObject.put("password", "abcdefg");
         userJsonObject.put("confirmPassword", "abcdefg");        
         
-        //this.userJsonObject.replace("username", "New Guy", "Another Guy");
         HttpEntity<String> request = new HttpEntity<String>(userJsonObject.toString(), headers);
         ObjectMapper objectMapper = new ObjectMapper();
         ResponseEntity<String> responseEntityStr = this.restTemplate.postForEntity(host + port + createUserUrl, request, String.class);
@@ -175,29 +149,22 @@ public class AuthenticationTests {
         ResponseEntity<String> loginEntityStr = this.restTemplate.postForEntity(host + port + loginUrl, loginRequest, String.class);
         
         HttpHeaders responseHeaders = loginEntityStr.getHeaders();
-        //userJsonObject.appendField("Authorization", responseHeaders.get("Authorization"));
 
         String authHeader = responseHeaders.get("Authorization").get(0);
         System.out.println("\n\n\n\n\n " + authHeader);        
         headers.add("Authorization", authHeader);
         System.out.println("\n\n\n\n\n " + headers);    
-        //HttpEntity<String> getUserRequest = new HttpEntity<String>(userJsonObject.toString(), headers);
-        //HttpEntity entity = new HttpEntity(headers);
+
         HttpEntity<String> getUserRequest = new HttpEntity<String>(null, headers);
         ObjectMapper userObjectMapper = new ObjectMapper();
         ResponseEntity<String> responseUserStr = restTemplate.exchange(host + port + "/api/user/Third Guy", HttpMethod.GET, getUserRequest, String.class);
-        //ResponseEntity<String> responseUserStr = this.restTemplate.getForEntity(host + port + "/api/user/New Guy", getUserRequest, String.class);
         
         JsonNode userRoot = userObjectMapper.readTree(responseUserStr.getBody());
-        //System.out.println("Headers? " + responseHeaders);
-        /**
-         * public static final String TOKEN_PREFIX = "Bearer ";
-            public static final String HEADER_STRING = "Authorization";
-         */
         
         assertNotNull(userRoot);
         assertEquals("\"Third Guy\"", userRoot.get("username").toString());
         System.out.println(userRoot.toString());
 
         
+     }
     }

@@ -2,6 +2,10 @@ package com.example.demo.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.splunk.logging.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.persistence.Cart;
+import com.example.demo.model.persistence.Item;
 import com.example.demo.model.persistence.User;
 import com.example.demo.model.persistence.UserOrder;
 import com.example.demo.model.persistence.repositories.CartRepository;
@@ -20,7 +25,7 @@ import com.example.demo.model.persistence.repositories.UserRepository;
 @RestController
 @RequestMapping("/api/order")
 public class OrderController {
-	
+	Logger splunkLogger = LoggerFactory.getLogger("splunk.logger");
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -30,22 +35,32 @@ public class OrderController {
 	
 	
 	@PostMapping("/submit/{username}")
-	public ResponseEntity<UserOrder> submit(@PathVariable String username) {
+	public ResponseEntity<?> submit(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
+			splunkLogger.error("Unable to add order, username was null");
 			return ResponseEntity.notFound().build();
 		}
-		UserOrder order = UserOrder.createFromCart(user.getCart());
-		orderRepository.save(order);
-		return ResponseEntity.ok(order);
+		try {
+			UserOrder order = UserOrder.createFromCart(user.getCart());
+			orderRepository.save(order);
+			List<Item> items = user.getCart().getItems(); 
+			splunkLogger.info("Added " + items.size() + " items for user " + username + " for a total of " + user.getCart().getTotal());
+			return ResponseEntity.ok(order);
+		} catch (Exception e) {
+			splunkLogger.error("Unable to add order for user " + username );
+		}
+		return (ResponseEntity<?>) ResponseEntity.badRequest();
 	}
 	
 	@GetMapping("/history/{username}")
 	public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
 		User user = userRepository.findByUsername(username);
 		if(user == null) {
+			splunkLogger.error("Unable to lookup order history, username was blank");
 			return ResponseEntity.notFound().build();
 		}
+		splunkLogger.info("Looking up order history for " + username);
 		return ResponseEntity.ok(orderRepository.findByUser(user));
 	}
 }

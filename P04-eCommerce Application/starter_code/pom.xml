@@ -41,11 +41,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.splunk.logging</groupId>
+			<artifactId>splunk-library-javalogging</artifactId>
+			<version>1.7.3</version>
+		</dependency>
+		<!-- <dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -77,6 +86,14 @@
      <version>2.10.0.pr1</version>
    </dependency> -->
  </dependencies>
+ <repositories>
+  	<!-- Splunk is not in the maven central repo -->
+  	<repository>
+      <id>splunk</id>
+      <name>splunk-releases</name>
+      <url>http://splunk.artifactoryonline.com/splunk/ext-releases-local</url>
+	</repository>
+  </repositories>
 
 	<build>
 		<plugins>

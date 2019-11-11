@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </layout>
+    </appender>
+
+    <logger name="com.example" level="debug" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+    <appender name="SPLUNK" class="com.splunk.logging.HttpEventCollectorLogbackAppender">
+        <url>https://127.0.0.1:8088</url>
+        <token>1bf1513c-f8d2-4bfa-96ad-dca5ef7eaca0</token>
+        <disableCertificateValidation>true</disableCertificateValidation>
+        <batch_size_count>1</batch_size_count>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+          <pattern>%msg</pattern>
+        </layout>
+  </appender>
+
+        <logger name="splunk.logger" additivity="false" level="INFO">
+        <appender-ref ref="SPLUNK"/>
+    </logger>
+
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

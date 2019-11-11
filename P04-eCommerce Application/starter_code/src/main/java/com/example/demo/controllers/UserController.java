@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.splunk.logging.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ import com.example.demo.model.requests.CreateUserRequest;
 @RequestMapping("/api/user")
 public class UserController {
 	private static Logger logger = LoggerFactory.getLogger(UserController.class);
+	//private static Logger splunkLogger = LoggerFactory.getLogger(splunk.logger);
+	Logger splunkLogger = LoggerFactory.getLogger("splunk.logger");
+
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -53,14 +57,15 @@ public class UserController {
 		cartRepository.save(cart);
 		user.setCart(cart);
 		//password changes
-		if(createUserRequest.getPassword().length() < 7 ||  
+		if(createUserRequest.getPassword().length() < 7 ||
 				!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())){
-					logger.error("Error with user password. Cannot create user {}", createUserRequest.getUsername());
+					splunkLogger.error("Error with user password. Cannot create user {}", createUserRequest.getUsername());
 					return ResponseEntity.badRequest().build();
 		}
 		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 		//
 		userRepository.save(user);
+		splunkLogger.info("Added user " + createUserRequest.getUsername());
 		return ResponseEntity.ok(user);
 	}
 	
