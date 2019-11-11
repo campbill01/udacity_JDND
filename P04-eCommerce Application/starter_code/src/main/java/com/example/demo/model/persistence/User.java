@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 
 @Entity
@@ -27,6 +28,13 @@ public class User {
 	@JsonProperty
 	private String username;
 	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@Column(nullable = false)
+	private String password;
+
+	@Column
+	private String salt;
+
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
 	@JsonIgnore
@@ -56,6 +64,20 @@ public class User {
 		this.username = username;
 	}
 	
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
-	
+	public String getSalt() {
+		return this.salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
 }
