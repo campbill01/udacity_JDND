@@ -12,18 +12,16 @@
     <logger name="com.example" level="debug" additivity="false">
         <appender-ref ref="CONSOLE"/>
     </logger>
-    <appender name="SPLUNK" class="com.splunk.logging.HttpEventCollectorLogbackAppender">
-        <url>https://127.0.0.1:8088</url>
-        <token>1bf1513c-f8d2-4bfa-96ad-dca5ef7eaca0</token>
-        <disableCertificateValidation>true</disableCertificateValidation>
-        <batch_size_count>1</batch_size_count>
+     <appender name="socket" class="com.splunk.logging.TcpAppender">
+        <RemoteHost>127.0.0.1</RemoteHost>
+        <Port>9000</Port>
         <layout class="ch.qos.logback.classic.PatternLayout">
-          <pattern>%msg</pattern>
+            <pattern>%thread %level: %msg%n</pattern>
         </layout>
-  </appender>
+    </appender>
 
-        <logger name="splunk.logger" additivity="false" level="INFO">
-        <appender-ref ref="SPLUNK"/>
+    <logger name="splunk.logger" additivity="false" level="INFO">
+        <appender-ref ref="socket"/>
     </logger>
 
 
