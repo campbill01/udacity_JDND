@@ -1,0 +1,10 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: udacity-e-commerce-ingress
+  annotations:
+    kubernetes.io/ingress.allow-http: "true"
+spec:
+  backend:
+    serviceName: udacity-e-commerce-service
+    servicePort: 8080

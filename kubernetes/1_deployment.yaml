@@ -1,0 +1,20 @@
+apiVersion: apps/v1beta1 
+kind: Deployment
+metadata:
+  name: udacity-e-commerce
+spec:
+  selector:
+    matchLabels:
+      app: udacity-e-commerce
+  replicas: 1 
+  template: 
+    metadata:
+      labels:
+        app: udacity-e-commerce
+    spec:
+      containers:
+      - name: udacity-e-commerce
+        image: campbill/udacity-e-commerce:latest
+        ports:
+        - containerPort: 8080
+          name: server
