@@ -14,6 +14,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
+/**
+ *  Used to get API exceptions in to splunk
+ *  
+ */ 
+
 @Order(org.springframework.core.Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -27,7 +33,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    }
 
    private ResponseEntity<Object> buildResponseEntity(ApiError apiError) {
-    splunkLogger.error("API error " +apiError.toString());
+    splunkLogger.error("API error " + apiError.toString());
        return new ResponseEntity<>(apiError, apiError.getStatus());
    }
 

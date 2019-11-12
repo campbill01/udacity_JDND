@@ -1,17 +1,23 @@
 package com.example.demo.error;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+// import lombok.AllArgsConstructor;
+// import lombok.Data;
+// import lombok.EqualsAndHashCode;
 
 
 abstract class ApiSubError {
 
 }
 
-@Data
-@EqualsAndHashCode(callSuper = false)
-@AllArgsConstructor
+
+/**
+ *  Used to get nested exceptions
+ *  
+ */ 
+
+// @Data
+// @EqualsAndHashCode(callSuper = false)
+// @AllArgsConstructor
 class ApiValidationError extends ApiSubError {
    private String object;
    private String field;

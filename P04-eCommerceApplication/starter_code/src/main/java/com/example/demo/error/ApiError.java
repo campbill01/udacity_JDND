@@ -4,14 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import org.springframework.http.HttpStatus;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
-//@Data
+/**
+ *  An object to use as a helper to get exceptions in to splunk
+ *  
+ */ 
+
 public class ApiError {
 
     private HttpStatus status;

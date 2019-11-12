@@ -13,6 +13,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 
+/**
+ *  Used to get auth exceptions in to splunk
+ *  
+ */ 
+
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     Logger splunkLogger = LoggerFactory.getLogger("splunk.logger"); 
 
