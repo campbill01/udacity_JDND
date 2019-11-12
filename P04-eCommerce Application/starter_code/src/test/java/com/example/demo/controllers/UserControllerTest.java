@@ -81,7 +81,6 @@ public class UserControllerTest {
     }
 
     @Test
-    //@Ignore
     public void noSuchUser() throws Exception {
         CreateUserRequest r = new CreateUserRequest();
         r.setUsername("Not in there");

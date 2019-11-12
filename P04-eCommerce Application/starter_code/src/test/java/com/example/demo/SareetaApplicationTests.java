@@ -23,12 +23,7 @@ public class SareetaApplicationTests {
 	// @Autowired UserController userController;
 	
 	@Test
-	@Ignore
 	public void contextLoads() {
-		// assertThat(cartController).isNotNull();
-		// assertThat(itemController).isNotNull();
-		// assertThat(orderController).isNotNull();
-		// assertThat(userController).isNotNull();
 	}
 
 }

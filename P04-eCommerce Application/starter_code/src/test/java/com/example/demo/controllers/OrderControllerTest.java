@@ -45,8 +45,6 @@ import org.springframework.web.client.RestTemplate;
 public class OrderControllerTest {
     Logger logger = LoggerFactory.getLogger(OrderControllerTest.class);
 
-    //@Autowired
-    //private RestTemplate restTemplate;
     private OrderController orderController;
     private UserRepository userRepository = mock(UserRepository.class);
     private OrderRepository orderRepository = mock(OrderRepository.class);
@@ -56,17 +54,6 @@ public class OrderControllerTest {
         orderController = new OrderController();
         TestUtils.injectObjects(orderController, "userRepository", userRepository);
         TestUtils.injectObjects(orderController, "orderRepository", orderRepository);
-        //TestUtils.injectObjects(orderController, "restTemplate", restTemplate);
-
-        // CreateUserRequest r = new CreateUserRequest();
-        // r.setUsername("TestId");
-        // r.setPassword("testpassword");
-        // r.setConfirmPassword("testpassword");
-        // logger.info("User Controller test: creating user");
-        // ResponseEntity<User> created = userController.createUser(r);
-
-        // when( userRepository.findByUsername("TestId")).thenReturn(created.getBody());
-        // when( userRepository.findById((long) 0)).thenReturn(Optional.of(created.getBody()));
         Item item = new Item();
         item.setDescription("Fake item");
         item.setId((long) 0);
@@ -98,9 +85,6 @@ public class OrderControllerTest {
 
     @Test
     public void findNonExistingUser() throws Exception {
-        // UriTemplate template = new UriTemplate("/history/{username}");
-        // Map<String, String> uriVariables = new HashMap<String, String>();
-        // uriVariables.put("username", "Missing User");
         logger.info("Order Controller test:  findNonExistingUser");
         ResponseEntity<List<UserOrder>> test =  orderController.getOrdersForUser("I'm not a user");
         assertEquals(HttpStatus.NOT_FOUND, test.getStatusCode());
@@ -108,9 +92,6 @@ public class OrderControllerTest {
 
     @Test
     public void findNullUser() throws Exception {
-        // UriTemplate template = new UriTemplate("/history/{username}");
-        // Map<String, String> uriVariables = new HashMap<String, String>();
-        // uriVariables.put("username", "Missing User");
         logger.info("Order Controller test:  nullUser");
         ResponseEntity<List<UserOrder>> test =  orderController.getOrdersForUser("");
         assertEquals(HttpStatus.NOT_FOUND, test.getStatusCode());
@@ -118,9 +99,6 @@ public class OrderControllerTest {
 
     @Test
     public void submitNonExistingUser() throws Exception {
-        // UriTemplate template = new UriTemplate("/history/{username}");
-        // Map<String, String> uriVariables = new HashMap<String, String>();
-        // uriVariables.put("username", "Missing User");
         logger.info("Order Controller test:  findNonExistingUser");
         ResponseEntity<?> order =  orderController.submit("I'm not a user");
         assertEquals(HttpStatus.NOT_FOUND, order.getStatusCode());
@@ -128,9 +106,6 @@ public class OrderControllerTest {
 
     @Test
     public void submitNullUser() throws Exception {
-        // UriTemplate template = new UriTemplate("/history/{username}");
-        // Map<String, String> uriVariables = new HashMap<String, String>();
-        // uriVariables.put("username", "Missing User");
         logger.info("Order Controller test:  nullUser");
         ResponseEntity<?> test =  orderController.submit("");
         assertEquals(HttpStatus.NOT_FOUND, test.getStatusCode());
@@ -138,9 +113,6 @@ public class OrderControllerTest {
     @Test
     public void getOrdersForUser() throws Exception {
         logger.info("Order Controller test:  findByUser");
-        // UriTemplate template = new UriTemplate("/history/{username}");
-        // Map<String, String> uriVariables = new HashMap<String, String>();
-        // uriVariables.put("username", "Missing User");
         ResponseEntity<List<UserOrder>> test =  orderController.getOrdersForUser("Test Guy");
         assertNotNull(test.getBody());
         assertEquals(HttpStatus.OK, test.getStatusCode());
@@ -150,24 +122,9 @@ public class OrderControllerTest {
     @Test
     public void submitOrderForUser() throws Exception {
         logger.info("Order Controller test:  submitOrderForUser");
-        // UriTemplate template = new UriTemplate("/history/{username}");
-        // Map<String, String> uriVariables = new HashMap<String, String>();
-        // uriVariables.put("username", "Missing User");
         ResponseEntity<?> order =  orderController.submit("Test Guy");
         assertNotNull(order.getBody());
         assertEquals(HttpStatus.OK, order.getStatusCode());
 
     }
-    /**
-     * public ResponseEntity<UserOrder> submit(@PathVariable String username) {
-		User user = userRepository.findByUsername(username);
-		if(user == null) {
-			return ResponseEntity.notFound().build();
-		}
-		UserOrder order = UserOrder.createFromCart(user.getCart());
-		orderRepository.save(order);
-		return ResponseEntity.ok(order);
-     */
-
-
 }
