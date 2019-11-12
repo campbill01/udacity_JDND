@@ -122,7 +122,7 @@ public class OrderControllerTest {
         // Map<String, String> uriVariables = new HashMap<String, String>();
         // uriVariables.put("username", "Missing User");
         logger.info("Order Controller test:  findNonExistingUser");
-        ResponseEntity<UserOrder> order =  orderController.submit("I'm not a user");
+        ResponseEntity<?> order =  orderController.submit("I'm not a user");
         assertEquals(HttpStatus.NOT_FOUND, order.getStatusCode());
     }
 
@@ -132,7 +132,7 @@ public class OrderControllerTest {
         // Map<String, String> uriVariables = new HashMap<String, String>();
         // uriVariables.put("username", "Missing User");
         logger.info("Order Controller test:  nullUser");
-        ResponseEntity<UserOrder> test =  orderController.submit("");
+        ResponseEntity<?> test =  orderController.submit("");
         assertEquals(HttpStatus.NOT_FOUND, test.getStatusCode());
     }
     @Test
@@ -153,7 +153,7 @@ public class OrderControllerTest {
         // UriTemplate template = new UriTemplate("/history/{username}");
         // Map<String, String> uriVariables = new HashMap<String, String>();
         // uriVariables.put("username", "Missing User");
-        ResponseEntity<UserOrder> order =  orderController.submit("Test Guy");
+        ResponseEntity<?> order =  orderController.submit("Test Guy");
         assertNotNull(order.getBody());
         assertEquals(HttpStatus.OK, order.getStatusCode());
 
